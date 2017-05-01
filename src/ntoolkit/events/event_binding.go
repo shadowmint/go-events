@@ -4,10 +4,14 @@ package events
 type EventBinding struct {
 	group   *eventGroup
 	handler func(event interface{})
-	once    bool
+	once    bool // Is this a binding for a single invocation event
 }
 
 // Release this binding
 func (b *EventBinding) Release() {
+	if b.group == nil {
+		return
+	}
 	b.group.Release(b)
+	b.group = nil
 }
